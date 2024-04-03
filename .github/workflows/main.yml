@@ -45,12 +45,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2  # Replace with your AWS region
 
-      - name: Set up kubectl
-        run: |
-          mkdir -p $HOME/.kube
-          echo "$KUBECONFIG" > $HOME/.kube/config
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}          
+      - name: Update kubeconfig
+        run: aws eks --region us-west-2 update-kubeconfig --name my-cluster
 
       - name: Deploy to AWS EKS
         run: |
