@@ -45,8 +45,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2  # Replace with your AWS region
 
+      - name: Set up kubectl
+        run: echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config          
+
       - name: Deploy to AWS EKS
         run: |
           kubectl get ns
-          kubectl apply -f deployment.yaml  
-          kubectl apply -f service.yaml     
+          kubectl apply -f deployment.yaml  --validate=false
+          kubectl apply -f service.yaml  --validate=false   
